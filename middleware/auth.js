@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import prisma from "../prismaClient.js";
 
 export const authenticateJWT = (req, res, next) => {
   const token =
@@ -11,4 +12,22 @@ export const authenticateJWT = (req, res, next) => {
     req.user = user;
     next();
   });
+};
+
+// check if post is made by logged-in user
+export const authorizePostUpdate = async (req, res, next) => {
+  const userId = req.user.id;
+  const postId = parseInt(req.params.id);
+
+  const post = await prisma.post.findUnique({ where: { id: postId } });
+  if (!post) {
+    return res.status(404).json({ error: "Post does not exist." });
+  }
+  if (post.userId !== userId) {
+    return res
+      .status(403)
+      .json({ error: "You do not have permission to edit this post" });
+  }
+
+  next();
 };
