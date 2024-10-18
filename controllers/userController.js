@@ -4,7 +4,14 @@ import jwt from "jsonwebtoken";
 
 export const fetchAllUsers = async (req, res) => {
   try {
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        role: true,
+      },
+    });
 
     if (users.length === 0) {
       return res.status(404).send("There are no users created!"); // Use 404 Not Found for clarity
