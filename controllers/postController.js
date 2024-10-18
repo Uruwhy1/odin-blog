@@ -21,14 +21,16 @@ export const createPost = async (req, res) => {
 };
 
 export const fetchAllPosts = async (req, res) => {
-  console.log("test");
   try {
     const posts = await prisma.post.findMany({
       include: {
-        user: true,
+        user: {
+          select: {
+            username: true,
+          },
+        },
       },
     });
-    console.log("test3");
 
     if (posts.length === 0) return res.status(404).send("No posts available!");
 
@@ -46,7 +48,12 @@ export const fetchSinglePost = async (req, res) => {
     const post = await prisma.post.findUnique({
       where: { id: postId },
       include: {
-        user: true,
+        user: {
+          select: {
+            username: true,
+          },
+        },
+        comments: true,
       },
     });
 
