@@ -5,9 +5,13 @@ import jwt from "jsonwebtoken";
 export const fetchAllUsers = async (req, res) => {
   try {
     const users = await prisma.user.findMany();
-    if (users.length == 0) res.send("There are no users created!");
+
+    if (users.length === 0) {
+      return res.status(404).send("There are no users created!"); // Use 404 Not Found for clarity
+    }
     res.json(users);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -57,16 +61,16 @@ export const createUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-  const { id } = req.params;
   const { username, email, password } = req.body;
+  const userId = req.user.id;
 
   try {
     const updatedUser = await prisma.user.update({
-      where: { id: Number(id) },
+      where: { id: userId },
       data: {
         username,
         email,
-        ...(password && { password: await bcrypt.hash(password, 10) }),
+        password: password ? await bcrypt.hash(password, 10) : undefined,
       },
     });
 
@@ -77,10 +81,13 @@ export const updateUser = async (req, res) => {
 };
 
 export const deleteUser = async (req, res) => {
-  const { id } = req.params;
+  const userId = req.user.id;
 
   try {
-    await prisma.user.delete({ where: { id: Number(id) } });
+    await prisma.user.delete({
+      where: { id: userId },
+    });
+
     res.status(204).send();
   } catch (error) {
     res.status(500).json({ error: "Error deleting user" });

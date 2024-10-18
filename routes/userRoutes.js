@@ -1,5 +1,5 @@
 import express from "express";
-import { authenticateJWT, authorizeUserUpdate } from "../middleware/auth.js";
+import { authenticateJWT } from "../middleware/auth.js";
 import * as userController from "../controllers/userController.js";
 
 const router = express.Router();
@@ -9,18 +9,8 @@ router.get("/:id", userController.fetchUserById);
 
 router.post("/", userController.createUser);
 
-router.put(
-  "/:id",
-  authenticateJWT,
-  authorizeUserUpdate,
-  userController.updateUser
-);
-router.delete(
-  "/:id",
-  authenticateJWT,
-  authorizeUserUpdate,
-  userController.deleteUser
-);
+router.put("/", authenticateJWT, userController.updateUser);
+router.delete("/", authenticateJWT, userController.deleteUser);
 
 router.post("/login", userController.loginUser);
 

@@ -12,16 +12,3 @@ export const authenticateJWT = (req, res, next) => {
     next();
   });
 };
-
-export const authorizeUserUpdate = async (req, res, next) => {
-  const userIdFromToken = req.user.id;
-  const userIdToUpdate = parseInt(req.params.id);
-
-  if (userIdFromToken !== userIdToUpdate) {
-    return res
-      .status(403)
-      .json({ error: "You do not have permission to edit this user." });
-  }
-
-  next();
-};
