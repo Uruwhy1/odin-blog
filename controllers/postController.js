@@ -1,7 +1,7 @@
 import prisma from "../prismaClient.js";
 
 export const createPost = async (req, res) => {
-  const { title, content } = req.body;
+  const { title, content, imageLink } = req.body;
   const userId = req.user.id;
 
   try {
@@ -9,6 +9,7 @@ export const createPost = async (req, res) => {
       data: {
         title,
         content,
+        imageLink,
         userId,
       },
     });
@@ -68,7 +69,7 @@ export const fetchSinglePost = async (req, res) => {
 
 export const updatePost = async (req, res) => {
   const postId = parseInt(req.params.id);
-  const { title, content } = req.body;
+  const { title, content, imageLink } = req.body;
 
   try {
     const updatedPost = await prisma.post.update({
@@ -76,6 +77,7 @@ export const updatePost = async (req, res) => {
       data: {
         title,
         content,
+        imageLink,
       },
     });
 
