@@ -1,6 +1,10 @@
 import express from "express";
 import cors from "cors";
-import { authenticateJWT, authorizePostUpdate } from "../middleware/auth.js";
+import {
+  authenticateJWT,
+  authorizePostUpdate,
+  checkUserRole,
+} from "../middleware/auth.js";
 import * as postController from "../controllers/postController.js";
 
 const router = express.Router();
@@ -10,6 +14,7 @@ const allowedOrigins = [process.env.ADMIN_FRONTEND, "http://localhost:3000"];
 router.post(
   "/",
   authenticateJWT,
+  checkUserRole,
   cors({ origin: allowedOrigins }),
   postController.createPost
 );

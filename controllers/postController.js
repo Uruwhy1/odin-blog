@@ -1,13 +1,14 @@
 import prisma from "../prismaClient.js";
 
 export const createPost = async (req, res) => {
-  const { title, content, imageLink, showCarousel } = req.body;
+  const { title, content, imageLink, showCarousel, summary } = req.body;
   const userId = req.user.id;
 
   try {
     const newPost = await prisma.post.create({
       data: {
         title,
+        summary,
         content,
         imageLink,
         userId,
