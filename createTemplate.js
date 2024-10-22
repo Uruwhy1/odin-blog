@@ -3,38 +3,6 @@ import prisma from "./prismaClient.js";
 const createTemplatePosts = async () => {
   const templatePosts = [
     {
-      title: "Traveling the World: Tips and Tricks",
-      summary:
-        "Discover essential tips for making the most of your travels around the world.",
-      content: "",
-      imageLink:
-        "https://bbaesthetic.com/wp-content/uploads/2022/08/young-girl-tourist-travels-2022-01-19-00-23-44-utc.jpg",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      userId: 12,
-    },
-    {
-      title: "Healthy Eating Habits",
-      summary:
-        "Learn about the benefits of healthy eating and how to create balanced meals.",
-      content: "",
-      imageLink: "https://via.placeholder.com/600x400?text=Healthy+Eating",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      userId: 13,
-    },
-    {
-      title: "The Art of Mindfulness",
-      summary:
-        "An introduction to mindfulness practices and how they can improve your mental health.",
-      content: "",
-      imageLink:
-        "https://www.verywellmind.com/thmb/1Dui2nFiDSWvJd6bax1EtYuFpkU=/2121x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-539661087-58d2e5e65f9b5846830df9aa.jpg",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      userId: 14,
-    },
-    {
       title: "Top 10 Coding Languages in 2024",
       summary:
         "Explore the programming languages that are expected to dominate the tech industry this year.",
@@ -44,6 +12,7 @@ const createTemplatePosts = async () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       userId: 12,
+      showCarousel: true,
     },
     {
       title: "Sustainable Living: Simple Changes",
@@ -51,7 +20,7 @@ const createTemplatePosts = async () => {
         "Find out how small changes in your daily life can contribute to a more sustainable future.",
       content: "",
       imageLink:
-        "https://cdn-kabof.nitrocdn.com/nfjHFOYSVknMSLxSPIZUhvuJiKcRMGGc/assets/images/optimized/rev-e8eae3c/advertisingweek.com/wp-content/uploads/2022/03/169environment-concept-globe-glass-in-green-forest-with-sunlight-picture-id1309463809.jpgg",
+        "https://cdn-kabof.nitrocdn.com/nfjHFOYSVknMSLxSPIZUhvuJiKcRMGGc/assets/images/optimized/rev-e8eae3c/advertisingweek.com/wp-content/uploads/2022/03/169environment-concept-globe-glass-in-green-forest-with-sunlight-picture-id1309463809.jpg",
       createdAt: new Date(),
       updatedAt: new Date(),
       userId: 14,
@@ -66,6 +35,29 @@ const createTemplatePosts = async () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       userId: 14,
+    },
+    {
+      title: "The Art of Mindfulness",
+      summary:
+        "An introduction to mindfulness practices and how they can improve your mental health.",
+      content: "",
+      imageLink:
+        "https://media.cnn.com/api/v1/images/stellar/prod/220531190304-woman-meditation-stock.jpg?c=original",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      userId: 14,
+    },
+    {
+      title: "Traveling the World: Tips and Tricks",
+      summary:
+        "Discover essential tips for making the most of your travels around the world.",
+      content: "",
+      imageLink:
+        "https://bbaesthetic.com/wp-content/uploads/2022/08/young-girl-tourist-travels-2022-01-19-00-23-44-utc.jpg",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      userId: 12,
+      showCarousel: true,
     },
     {
       title: "Fitness: Staying Motivated",
@@ -99,6 +91,7 @@ const createTemplatePosts = async () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       userId: 15,
+      showCarousel: true,
     },
   ];
 
