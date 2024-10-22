@@ -1,20 +1,30 @@
 import express from "express";
+import cors from "cors";
 import { authenticateJWT, authorizePostUpdate } from "../middleware/auth.js";
 import * as postController from "../controllers/postController.js";
 
 const router = express.Router();
 
-router.post("/", authenticateJWT, postController.createPost);
+const allowedOrigins = [process.env.ADMIN_FRONTEND, "http://localhost:3000"];
+
+router.post(
+  "/",
+  authenticateJWT,
+  cors({ origin: allowedOrigins }),
+  postController.createPost
+);
 router.get("/", postController.fetchAllPosts);
 router.get("/:id", postController.fetchSinglePost);
 router.put(
   "/:id",
   authenticateJWT,
+  cors({ origin: allowedOrigins }),
   authorizePostUpdate,
   postController.updatePost
 );
 router.delete(
   "/:id",
+  cors({ origin: allowedOrigins }),
   authenticateJWT,
   authorizePostUpdate,
   postController.deletePost
