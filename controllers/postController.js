@@ -24,8 +24,13 @@ export const createPost = async (req, res) => {
 };
 
 export const fetchAllPosts = async (req, res) => {
+  const limit = parseInt(req.query.limit) || 8;
+  const page = parseInt(req.query.page) || 1;
+  const carousel = req.query.carousel === "true";
+
   try {
     const posts = await prisma.post.findMany({
+      where: carousel ? { showCarousel: true } : {},
       include: {
         user: {
           select: {
@@ -33,14 +38,20 @@ export const fetchAllPosts = async (req, res) => {
           },
         },
       },
+      orderBy: {
+        id: "desc",
+      },
+      take: limit,
+      skip: (page - 1) * limit,
     });
 
-    if (posts.length === 0) return res.status(404).send("No posts available!");
+    if (posts.length === 0) return res.status(404).send("no posts available!");
 
-    res.json(posts);
+    const totalPosts = await prisma.post.count();
+    res.json({ posts, totalPosts });
   } catch (error) {
-    console.error("Error fetching posts:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("error fetching posts:", error);
+    res.status(500).json({ error: "internal server error" });
   }
 };
 
