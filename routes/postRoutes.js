@@ -18,8 +18,8 @@ router.post(
   cors({ origin: allowedOrigins }),
   postController.createPost
 );
-router.get("/", postController.fetchAllPosts);
-router.get("/:id", postController.fetchSinglePost);
+router.get("/", cors({ allowedOrigins }), postController.fetchAllPosts);
+router.get("/:id", cors({ allowedOrigins }), postController.fetchSinglePost);
 router.put(
   "/:id",
   authenticateJWT,

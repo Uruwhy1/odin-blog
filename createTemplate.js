@@ -22,7 +22,7 @@ const createTemplatePosts = async () => {
         "https://penntoday.upenn.edu/sites/default/files/2022-01/cryptocurrency-main.jpg",
       createdAt: new Date(),
       updatedAt: new Date(),
-      userId: 5,
+      userId: 6,
     },
     {
       title: "The Art of Mindfulness",
@@ -44,7 +44,7 @@ const createTemplatePosts = async () => {
         "https://bbaesthetic.com/wp-content/uploads/2022/08/young-girl-tourist-travels-2022-01-19-00-23-44-utc.jpg",
       createdAt: new Date(),
       updatedAt: new Date(),
-      userId: 5,
+      userId: 6,
       showCarousel: true,
     },
     {
@@ -56,7 +56,7 @@ const createTemplatePosts = async () => {
         "https://images.pexels.com/photos/252252/pexels-photo-1552252.jpeg?cs=srgb&dl=pexels-leonardho-1552252.jpg&fm=jpg",
       createdAt: new Date(),
       updatedAt: new Date(),
-      userId: 5,
+      userId: 6,
     },
     {
       title: "The Importance of Mental Health",
@@ -78,7 +78,7 @@ const createTemplatePosts = async () => {
         "https://www.uopeople.edu/wp-content/uploads/2022/06/blaz-photo-zMRLZh40kms-unsplash-scaled.jpg",
       createdAt: new Date(),
       updatedAt: new Date(),
-      userId: 5,
+      userId: 6,
       showCarousel: true,
     },
   ];

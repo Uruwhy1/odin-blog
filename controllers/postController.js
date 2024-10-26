@@ -32,6 +32,8 @@ export const fetchAllPosts = async (req, res) => {
     const posts = await prisma.post.findMany({
       where: carousel ? { showCarousel: true } : {},
       include: {
+        content: false,
+        updatedAt: false,
         user: {
           select: {
             username: true,
