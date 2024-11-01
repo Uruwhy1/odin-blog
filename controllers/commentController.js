@@ -13,6 +13,7 @@ export const createComment = async (req, res) => {
       },
     });
 
+    newComment.user = req.user;
     res.status(201).json(newComment);
   } catch (error) {
     console.error("Error creating comment:", error);
