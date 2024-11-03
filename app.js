@@ -4,11 +4,29 @@ import userRouter from "./routes/userRoutes.js";
 import postRouter from "./routes/postRoutes.js";
 import commentRouter from "./routes/commentRoutes.js";
 import uploadRouter from "./routes/upload.js";
+import cors from "cors";
 
+const allowedOrigins = [
+  process.env.ADMIN_FRONTEND,
+  "http://localhost:3000",
+  "http://localhost:5173",
+];
 const app = express();
 const PORT = process.env.PORT;
 const SECRET_KEY = process.env.SECRET_KEY;
 
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin, like mobile apps or curl requests
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
 app.use(express.json({ limit: "10mb" }));
 
 app.use("/users", userRouter);
