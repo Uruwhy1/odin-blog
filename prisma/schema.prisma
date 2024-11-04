@@ -12,6 +12,7 @@ model User {
   username String    @unique
   email    String    @unique
   password String
+  picture  String    @default("")
   role     Role      @default(USER)
   posts    Post[]    @relation("UserPosts")
   comments Comment[] @relation("UserComments")
