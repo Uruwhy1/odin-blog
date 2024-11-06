@@ -4,6 +4,9 @@ export const createPost = async (req, res) => {
   const { title, content, imageLink, showCarousel, summary } = req.body;
   const userId = req.user.id;
 
+  if (req.user.role == "USER")
+    res.status(403).json({ error: "Access denied: insufficient permissions" });
+
   try {
     const newPost = await prisma.post.create({
       data: {
@@ -24,12 +27,11 @@ export const createPost = async (req, res) => {
 };
 
 export const fetchAllPosts = async (req, res) => {
-  const limit = parseInt(req.query.limit) || 8;
-  const page = parseInt(req.query.page) || 1;
+  const { limit, page } = req.query;
   const carousel = req.query.carousel === "true";
 
   try {
-    const posts = await prisma.post.findMany({
+    const options = {
       where: carousel ? { showCarousel: true } : {},
       include: {
         content: false,
@@ -43,17 +45,58 @@ export const fetchAllPosts = async (req, res) => {
       orderBy: {
         id: "desc",
       },
-      take: limit,
-      skip: (page - 1) * limit,
-    });
+    };
 
-    if (posts.length === 0) return res.status(404).send("no posts available!");
+    if (limit) options.take = parseInt(limit);
+    if (page && limit) options.skip = (parseInt(page) - 1) * options.take;
+
+    const posts = await prisma.post.findMany(options);
+
+    if (posts.length === 0) return res.status(404).send("No posts available!");
 
     const totalPosts = await prisma.post.count();
     res.json({ posts, totalPosts });
   } catch (error) {
-    console.error("error fetching posts:", error);
-    res.status(500).json({ error: "internal server error" });
+    console.error("Error fetching posts:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const fetchUserPosts = async (req, res) => {
+  const { limit, page } = req.query;
+  let userId = parseInt(req.params.userId);
+
+  if (!userId) {
+    return res.status(400).json({ error: "User ID is required" });
+  }
+
+  try {
+    const options = {
+      where: { userId },
+      include: {
+        content: false,
+        updatedAt: false,
+        user: {
+          select: {
+            username: true,
+          },
+        },
+      },
+      orderBy: { id: "desc" },
+    };
+
+    if (limit) options.take = parseInt(limit);
+    if (page && limit) options.skip = (parseInt(page) - 1) * options.take;
+
+    const posts = await prisma.post.findMany(options);
+
+    if (posts.length === 0) return res.status(404).send("No posts available!");
+
+    const totalPosts = await prisma.post.count({ where: { userId } });
+    res.json({ posts, totalPosts });
+  } catch (error) {
+    console.error("Error fetching user posts:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
