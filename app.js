@@ -7,10 +7,11 @@ import uploadRouter from "./routes/upload.js";
 import cors from "cors";
 
 const allowedOrigins = [
-  process.env.ADMIN_FRONTEND,
   "http://localhost:3000",
-  "http://localhost:5173",
+  process.env.ADMIN_FRONTEND,
+  process.env.FRONTEND,
 ];
+
 const app = express();
 const PORT = process.env.PORT;
 const SECRET_KEY = process.env.SECRET_KEY;
