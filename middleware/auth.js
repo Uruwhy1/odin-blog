@@ -51,3 +51,15 @@ export const checkUserRole = async (req, res, next) => {
     .status(403)
     .json({ error: "You do not have permission to access this post." });
 };
+
+export const checkAdminRole = async (req, res, next) => {
+  const userRole = req.user.role.toLowerCase();
+
+  if (userRole === "admin") {
+    return next();
+  }
+
+  return res
+    .status(403)
+    .json({ error: "You do not have permission to access this post." });
+};

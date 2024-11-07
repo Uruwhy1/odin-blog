@@ -9,7 +9,8 @@ import * as postController from "../controllers/postController.js";
 const router = express.Router();
 
 router.post("/", authenticateJWT, checkUserRole, postController.createPost);
-router.get("/", postController.fetchAllPosts);
+router.get("/", postController.fetchPublishedPosts);
+router.get("/all", postController.fetchAllPosts);
 router.get("/:id", postController.fetchSinglePost);
 router.get("/user/:userId", authenticateJWT, postController.fetchUserPosts);
 router.put(
