@@ -133,16 +133,25 @@ export const toggleUserRole = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
+    const user = await prisma.user.findUnique({
+      where: { id: Number(id) },
+      select: { role: true },
+    });
 
-    user.role = user.role === "AUTHOR" ? "USER" : "AUTHOR";
-    await user.save();
+    const newRole = user.role == "AUTHOR" ? "USER" : "AUTHOR";
 
-    res.json({ message: `User role updated to ${user.role}.`, user });
+    const updatedPost = await prisma.user.update({
+      where: { id: Number(id) },
+      data: {
+        role: newRole,
+      },
+    });
+
+    res.json({
+      message: `User role updated successfully.`,
+    });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Failed to update user role." });
   }
 };
