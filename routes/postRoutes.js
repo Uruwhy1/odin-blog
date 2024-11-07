@@ -25,4 +25,10 @@ router.delete(
   postController.deletePost
 );
 
+router.patch(
+  "/:id/publish",
+  authenticateJWT,
+  authorizePostUpdate,
+  postController.togglePublishStatus
+);
 export default router;

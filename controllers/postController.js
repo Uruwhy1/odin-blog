@@ -32,7 +32,10 @@ export const fetchAllPosts = async (req, res) => {
 
   try {
     const options = {
-      where: carousel ? { showCarousel: true } : {},
+      where: {
+        published: true,
+        ...(carousel && { showCarousel: true }),
+      },
       include: {
         content: false,
         updatedAt: false,
@@ -144,6 +147,33 @@ export const updatePost = async (req, res) => {
   } catch (error) {
     console.error("Error updating post:", error);
     res.status(500).json({ error: "Error updating post" });
+  }
+};
+
+export const togglePublishStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const post = await prisma.post.findUnique({
+      where: { id: Number(id) },
+      select: { published: true },
+    });
+
+    const updatedPost = await prisma.post.update({
+      where: { id: Number(id) },
+      data: {
+        published: !post.published,
+      },
+    });
+
+    res.json({
+      message: `Post ${
+        updatedPost.published ? "published" : "unpublished"
+      } successfully.`,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Failed to update post status." });
   }
 };
 
