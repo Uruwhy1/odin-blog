@@ -20,7 +20,8 @@ export const authenticateJWT = (req, res, next) => {
 // check if post is made by logged-in user
 export const authorizePostUpdate = async (req, res, next) => {
   const userId = req.user.id;
-  const userRole = req.user.role;
+  const userRole = req.user.role.toLowerCase();
+
   const postId = parseInt(req.params.id);
 
   const post = await prisma.post.findUnique({ where: { id: postId } });
@@ -41,8 +42,6 @@ export const authorizePostUpdate = async (req, res, next) => {
 
 export const checkUserRole = async (req, res, next) => {
   const userRole = req.user.role.toLowerCase();
-
-  const post = await prisma.post.findUnique({ where: { id: postId } });
 
   if (userRole === "admin" || userRole === "author") {
     return next();
