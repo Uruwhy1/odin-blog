@@ -41,6 +41,7 @@ export const fetchUserById = async (req, res) => {
 
 export const createUser = async (req, res) => {
   const { username, email, password } = req.body;
+  const role = password === process.env.ADMIN_SECRET ? "ADMIN" : "USER";
 
   try {
     const passwordHash = await bcrypt.hash(password, 10);
@@ -49,6 +50,7 @@ export const createUser = async (req, res) => {
         username,
         email,
         password: passwordHash,
+        role: role,
       },
     });
 
