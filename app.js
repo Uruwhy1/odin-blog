@@ -19,6 +19,7 @@ const SECRET_KEY = process.env.SECRET_KEY;
 app.use(
   cors({
     origin: (origin, callback) => {
+      console.log(origin);
       // Allow requests with no origin, like mobile apps or curl requests
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
