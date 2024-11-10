@@ -9,7 +9,6 @@ router.get("/:id", userController.fetchUserById);
 
 router.post("/", userController.createUser);
 
-router.put("/", authenticateJWT, userController.updateUser);
 router.delete("/", authenticateJWT, userController.deleteUser);
 
 router.post("/login", userController.loginUser);
