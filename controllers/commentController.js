@@ -1,20 +1,38 @@
 import prisma from "../prismaClient.js";
+import { escape } from "html-escaper";
+
+const sanitizeComment = (comment) => ({
+  ...comment,
+  content: escape(comment.content),
+  user: comment.user
+    ? {
+        ...comment.user,
+        username: escape(comment.user.username),
+      }
+    : null,
+});
 
 export const createComment = async (req, res) => {
   const { postId } = req.params;
   const { content } = req.body;
 
   try {
+    const sanitizedContent = content.trim();
+
     const newComment = await prisma.comment.create({
       data: {
-        content,
-        userId: req.user.id, // Get the user ID from the authenticated request
-        postId: parseInt(postId), // Ensure postId is an integer
+        content: sanitizedContent,
+        userId: req.user.id,
+        postId: parseInt(postId),
+      },
+      include: {
+        user: {
+          select: { username: true },
+        },
       },
     });
 
-    newComment.user = req.user;
-    res.status(201).json(newComment);
+    res.status(201).json(sanitizeComment(newComment));
   } catch (error) {
     console.error("Error creating comment:", error);
     res.status(500).json({ error: "Error creating comment" });
@@ -36,20 +54,5 @@ export const fetchCommentsByPost = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-export const updateComment = async (req, res) => {
-  const { id } = req.params;
-  const { content } = req.body;
-
-  try {
-    const updatedComment = await prisma.comment.update({
-      where: { id: parseInt(id) },
-      data: { content },
-    });
-    res.json(updatedComment);
-  } catch (error) {
-    res.status(500).json({ error: "Error updating comment" });
   }
 };
